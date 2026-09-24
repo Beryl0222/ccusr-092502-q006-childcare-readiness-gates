@@ -1,0 +1,27 @@
+{
+  "service": "childcare-readiness-gates",
+  "entities": [
+    "investment_project",
+    "readiness_evidence",
+    "service_scope",
+    "fund_disbursement"
+  ],
+  "events": [
+    "MILESTONE_REPORTED",
+    "EVIDENCE_SIGNED",
+    "SCOPE_OPENED",
+    "SCOPE_SUSPENDED",
+    "FUNDS_RECONCILED"
+  ],
+  "envelope": {
+    "required": [
+      "event_id",
+      "event_type",
+      "occurred_at",
+      "aggregate_id",
+      "version",
+      "payload"
+    ],
+    "version_minimum": 1
+  }
+}

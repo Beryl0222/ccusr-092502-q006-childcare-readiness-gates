@@ -1,0 +1,6 @@
+[project]
+name = "childcare-readiness-gates"
+version = "0.1.0"
+description = "托育建设投运证据门的领域事件边界"
+requires-python = ">=3.11"
+dependencies = []

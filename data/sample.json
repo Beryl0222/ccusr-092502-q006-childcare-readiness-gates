@@ -1,0 +1,10 @@
+{
+  "event_id": "childcare-re-sample-001",
+  "event_type": "MILESTONE_REPORTED",
+  "occurred_at": "2026-09-24T09:00:00+08:00",
+  "aggregate_id": "investment_project-001",
+  "version": 1,
+  "payload": {
+    "note": "用于校验基础事件信封"
+  }
+}
