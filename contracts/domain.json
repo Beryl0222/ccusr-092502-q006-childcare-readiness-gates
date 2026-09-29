@@ -7,10 +7,18 @@
     "fund_disbursement"
   ],
   "events": [
+    "PROJECT_REGISTERED",
     "MILESTONE_REPORTED",
+    "EVIDENCE_SUBMITTED",
     "EVIDENCE_SIGNED",
+    "EVIDENCE_REVOKED",
+    "ISSUE_REPORTED",
+    "ISSUE_RESOLVED",
     "SCOPE_OPENED",
     "SCOPE_SUSPENDED",
+    "SCOPE_RESUMED",
+    "FUNDS_DISBURSED",
+    "FUNDS_RECALLED",
     "FUNDS_RECONCILED"
   ],
   "envelope": {
@@ -23,5 +31,32 @@
       "payload"
     ],
     "version_minimum": 1
-  }
+  },
+  "vocabulary": {
+    "deadlines": ["start_deadline", "completion_deadline", "operation_deadline"],
+    "milestones": ["started", "completed"],
+    "service_scopes": ["full_day", "half_day", "hourly"],
+    "evidence_categories": [
+      "milestone_completion",
+      "venue_acceptance",
+      "fire_filing",
+      "food_filing",
+      "operation_plan",
+      "staff_qualification",
+      "safety_system",
+      "service_agreement",
+      "trial_clearance"
+    ],
+    "conclusions": ["pass", "fail"],
+    "suspension_reasons": ["evidence_expired", "major_rectification", "agreement_ended"],
+    "issue_severities": ["minor", "major"]
+  },
+  "rules": [
+    "工程竣工不自动开放任何班型；班型仅在该班型所需证据按各自生效期全部有效时开放",
+    "证据经提交后由职责矩阵中与提交者不同的责任人签署结论；提交者不得批准自己的材料",
+    "已签署结论不可原地修改，纠正以同证据链的新版本表达",
+    "证照过期、重大整改或合作协议终止只暂停依赖该证据的班型，原因消除后恢复",
+    "同一放款回执重送不重复放款；新版本不通过或撤销使旧放款进入待追回",
+    "全部状态由只追加事件重放得到，重启后待复核与待追回不丢失"
+  ]
 }
