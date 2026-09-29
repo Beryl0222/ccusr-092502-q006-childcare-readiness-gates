@@ -6,12 +6,41 @@
     "service_scope",
     "fund_disbursement"
   ],
+  "aggregates": [
+    "investment_project"
+  ],
+  "service_types": [
+    "full_day",
+    "half_day",
+    "hourly"
+  ],
+  "conclusion_kinds": [
+    "construction_completion",
+    "operations_plan",
+    "safety_registration"
+  ],
+  "milestones": [
+    "start_construction",
+    "completion",
+    "operation"
+  ],
   "events": [
+    "PROJECT_REGISTERED",
     "MILESTONE_REPORTED",
+    "EVIDENCE_RECORDED",
     "EVIDENCE_SIGNED",
+    "RECTIFICATION_REQUIRED",
+    "RECTIFICATION_CLEARED",
+    "PROTOCOL_SIGNED",
+    "PROTOCOL_TERMINATED",
+    "TRIAL_ISSUE_RAISED",
+    "TRIAL_ISSUE_CLOSED",
     "SCOPE_OPENED",
     "SCOPE_SUSPENDED",
-    "FUNDS_RECONCILED"
+    "SCOPE_RESUMED",
+    "FUNDS_DISBURSED",
+    "FUNDS_RECONCILED",
+    "FUNDS_RECOVERED"
   ],
   "envelope": {
     "required": [
@@ -22,6 +51,18 @@
       "version",
       "payload"
     ],
-    "version_minimum": 1
+    "version_minimum": 1,
+    "version_rule": "同一 aggregate_id 内从 1 严格递增；同一命令产生多事件时版本连续；event_id 全局唯一"
+  },
+  "rules": {
+    "immutability": "事件一经接收不可原地改写；纠正旧结论/旧上报通过新版本事件表达，payload.supersedes 指向被替代事件",
+    "segregation_of_duty": "结论签署人不得是其任一引用证据的 submitted_by；三条结论链分别由建设、运营、安全职责人签署",
+    "readiness": "班型开放要求三条结论链有效、运营方案确认该班型人员配置、存在有效服务包协议、无未关闭阻断性试运行问题",
+    "validity_period": "证据与协议按 valid_from/valid_until 在观察时点求值；到期即派生阻断，巡检补记 SCOPE_SUSPENDED",
+    "scoped_suspension": "证照过期、重大整改、协议终止仅暂停依赖该条件的班型；整改消除/续期后须显式 SCOPE_RESUMED 并重新核验",
+    "idempotent_disbursement": "receipt_id 为幂等键，同一回执重送返回 deduplicated 且不产生新事件",
+    "fund_basis": "FUNDS_DISBURSED.payload.basis 固化闸门类型、所引用结论版本及证据有效期快照",
+    "correction_impact": "新版本结论推翻旧的 pass 时，对依据该结论放款的回执产生 FUNDS_RECONCILED（recovery_required=true）；追回后记 FUNDS_RECOVERED",
+    "durability": "事件以仅追加 JSONL 存储并 fsync；恢复时重放全部事件，待复核与待追回事项为派生视图，末行撕裂自动回截"
   }
 }
